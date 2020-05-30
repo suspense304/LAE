@@ -1,0 +1,36 @@
+﻿@page
+@model LAE.Pages.Events.Types.ListModel
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>List</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EventType[0].Type)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.EventType) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.TypeId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.TypeId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.TypeId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

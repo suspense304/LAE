@@ -1,0 +1,25 @@
+﻿@page
+@model LAE.Pages.Events.Types.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>EventType</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventType.Type)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventType.Type)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.EventType.TypeId">Edit</a> |
+    <a asp-page="./List">View All</a>
+</div>

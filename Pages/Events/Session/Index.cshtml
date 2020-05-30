@@ -1,0 +1,55 @@
+﻿@page
+@model LAE.Pages.Events.Events.IndexModel
+@using LostArkEng.Models
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Party Leader</th>
+            <th>Member #2</th>
+            <th>Member #3</th>
+            <th>Member #4</th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventInfo[0].StartingTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventInfo[0].isActive)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.EventInfo) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy.DiscordName) - @Html.DisplayFor(modelItem => item.CreatedBy.CharClass)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberTwo) - @Html.DisplayFor(modelItem => item.MemberTwo.CharClass)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberThree) - @Html.DisplayFor(modelItem => item.MemberThree.CharClass)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberFour) - @Html.DisplayFor(modelItem => item.MemberFour.CharClass)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartingTime)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
