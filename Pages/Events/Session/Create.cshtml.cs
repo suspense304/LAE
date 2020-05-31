@@ -7,17 +7,18 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using LAE.Data;
 using LostArkEng.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace LAE.Pages.Events.Events
 {
     public class CreateModel : PageModel
     {
         private readonly LAE.Data.ApplicationDbContext _context;
-        
-
-        public CreateModel(LAE.Data.ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public CreateModel(LAE.Data.ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
             Activities = _context.Actvity.ToList();
         }
 
@@ -37,18 +38,24 @@ namespace LAE.Pages.Events.Events
         [BindProperty]
         public List<Activity> Activities { get; set; }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://aka.ms/RazorPagesCRUD.
+
+        private async Task<ApplicationUser> GetCurrentUser()
+        {
+            return await _userManager.GetUserAsync(HttpContext.User);
+        }
+
         public async Task<IActionResult> OnPostAsync()
         {
-            ApplicationUser applicationUser = new ApplicationUser();
-            applicationUser.Id = "0";
-            applicationUser.ItemLevel = 709;
-            applicationUser.DiscordName = "Suspense";
+            //ApplicationUser applicationUser = new ApplicationUser();
+            //applicationUser.Id = "0";
+            //applicationUser.ItemLevel = 709;
+            //applicationUser.DiscordName = "Suspense";
+
+            ApplicationUser user = await GetCurrentUser();
 
             EventInfo newEvent = new EventInfo();
             newEvent.ActivityId = Activity.Id;
-            newEvent.CreatedBy = applicationUser;
+            newEvent.CreatedBy = user;
             newEvent.isActive = EventInfo.isActive;
             newEvent.StartingTime = EventInfo.StartingTime;
 

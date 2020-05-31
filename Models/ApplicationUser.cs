@@ -24,6 +24,13 @@ namespace LostArkEng.Models
             DevilHunter,
             Blaster
         }
+
+        public enum ServerName
+        {
+            Kratos,
+            Sirion
+
+        }
         public string DiscordName { get; set; }
         public CharacterClass CharClass { get; set; }
         public double ItemLevel { get; set; }

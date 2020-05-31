@@ -13,18 +13,28 @@ namespace LAE.Pages.Events.Events
 {
     public class IndexModel : PageModel
     {
-        private readonly LAE.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public IndexModel(LAE.Data.ApplicationDbContext context)
+        [BindProperty]
+        public ApplicationUser LoggedInUser { get; set; }
+
+        public IndexModel(LAE.Data.ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
+        private async Task<ApplicationUser> GetCurrentUser()
+        {
+            return await _userManager.GetUserAsync(HttpContext.User);
+        }
         public IList<EventInfo> EventInfo { get;set; }
 
         public async Task OnGetAsync()
         {
-            EventInfo = await _context.EventInfo.ToListAsync();
+            LoggedInUser = await GetCurrentUser();
+            EventInfo = await _context.EventInfo.Include(x => x.MemberTwo).Include(x => x.MemberThree).Include(x => x.MemberFour).Include(x => x.CreatedBy).ToListAsync();
         }
     }
 }
