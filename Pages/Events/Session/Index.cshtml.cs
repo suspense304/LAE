@@ -16,6 +16,7 @@ namespace LAE.Pages.Events.Events
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
+
         [BindProperty]
         public ApplicationUser LoggedInUser { get; set; }
 
@@ -29,12 +30,16 @@ namespace LAE.Pages.Events.Events
         {
             return await _userManager.GetUserAsync(HttpContext.User);
         }
-        public IList<EventInfo> EventInfo { get;set; }
+        public IList<EventInfo> EventInfo { get; set; }
+
+        [BindProperty]
+        public EventInfo SelectedEvent { get; set; }
 
         public async Task OnGetAsync()
         {
             LoggedInUser = await GetCurrentUser();
             EventInfo = await _context.EventInfo.Include(x => x.MemberTwo).Include(x => x.MemberThree).Include(x => x.MemberFour).Include(x => x.CreatedBy).ToListAsync();
         }
+
     }
 }

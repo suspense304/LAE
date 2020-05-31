@@ -29,10 +29,10 @@ namespace LostArkEng.Models
         {
             Kratos,
             Sirion
-
         }
         public string DiscordName { get; set; }
         public CharacterClass CharClass { get; set; }
+        public ServerName Server { get; set;  }
         public double ItemLevel { get; set; }
     }
 }

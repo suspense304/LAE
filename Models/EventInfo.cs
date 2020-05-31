@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using static LostArkEng.Models.ApplicationUser;
 
 namespace LostArkEng.Models
 {
@@ -21,11 +22,16 @@ namespace LostArkEng.Models
         public ApplicationUser MemberFour { get; set; } = null!;
         public DateTime StartingTime { get; set; } = DateTime.Now.AddMinutes(30);
         public bool isActive { get; set; }
+        [ForeignKey("Server")]
+        public ServerName ServerName { get; set; }
 
         [NotMapped]
         public virtual Activity ActivityInfo { get; set; }
 
         [NotMapped]
         public virtual ICollection<Activity> Activities { get; set; }
+
+        [NotMapped]
+        public virtual ServerName Server { get; set; }
     }
 }

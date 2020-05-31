@@ -46,11 +46,6 @@ namespace LAE.Pages.Events.Events
 
         public async Task<IActionResult> OnPostAsync()
         {
-            //ApplicationUser applicationUser = new ApplicationUser();
-            //applicationUser.Id = "0";
-            //applicationUser.ItemLevel = 709;
-            //applicationUser.DiscordName = "Suspense";
-
             ApplicationUser user = await GetCurrentUser();
 
             EventInfo newEvent = new EventInfo();
@@ -58,8 +53,7 @@ namespace LAE.Pages.Events.Events
             newEvent.CreatedBy = user;
             newEvent.isActive = EventInfo.isActive;
             newEvent.StartingTime = EventInfo.StartingTime;
-
-
+            newEvent.ServerName = user.Server;
 
             //if (!ModelState.IsValid)
             //{

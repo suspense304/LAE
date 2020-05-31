@@ -7,6 +7,7 @@
 }
 @if (Model.LoggedInUser != null)
 {
+
     <p>
         <a asp-page="Create">Create New</a>
     </p>
@@ -21,7 +22,7 @@
                     @Html.DisplayNameFor(model => model.EventInfo[0].StartingTime)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.EventInfo[0].isActive)
+                    Server Name
                 </th>
                 <th></th>
             </tr>
@@ -30,66 +31,70 @@
 
             @foreach (var item in Model.EventInfo)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CreatedBy.DiscordName)
-                    </td>
-                    <td>
-                        @if (item.MemberTwo != null)
-                        {
-                            @Html.DisplayFor(modelItem => item.MemberTwo.DiscordName)
-                        }
-                        else if (item.CreatedBy.DiscordName != @Model.LoggedInUser.DiscordName)
-                        {
-                            <button asp-action="JoinSession">Join</button>
-                        }
-                        else
-                        {
-                            <span>--EMPTY--</span>
-                        }
-                    </td>
-                    <td>
-                        @if (item.MemberThree != null)
-                        {
-                            @Html.DisplayFor(modelItem => item.MemberThree.DiscordName)
-                        }
-                        else if (item.CreatedBy.DiscordName != @Model.LoggedInUser.DiscordName)
-                        {
-                            <button asp-action="JoinSession">Join</button>
-                        }
-                        else
-                        {
-                            <span>--EMPTY--</span>
-                        }
-                    </td>
-                    <td>
-                        @if (item.MemberFour != null)
-                        {
-                            @Html.DisplayFor(modelItem => item.MemberFour.DiscordName)
-                        }
-                        else if (item.CreatedBy.DiscordName != @Model.LoggedInUser.DiscordName)
-                        {
-                            <button asp-action="JoinSession">Join</button>
-                        }
-                        else
-                        {
-                            <span>--EMPTY--</span>
-                        }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartingTime)
-                    </td>
-                    <td>
-                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
+                <form method="post">
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedBy.DiscordName)
+                        </td>
+                        <td>
+                            @if (item.MemberTwo != null)
+                            {
+                                @Html.DisplayFor(modelItem => item.MemberTwo.DiscordName)
+                            }
+                            else if (item.CreatedBy.DiscordName != @Model.LoggedInUser.DiscordName)
+                            {
+                                <input type="submit" asp-action="JoinTeam" asp-route-id="@item.Id" asp-route-slot="2" value="Join" class="btn btn-primary" />
+                            }
+                            else
+                            {
+                                <span>--EMPTY--</span>
+                            }
+                        </td>
+                        <td>
+                            @if (item.MemberThree != null)
+                            {
+                                @Html.DisplayFor(modelItem => item.MemberThree.DiscordName)
+                            }
+                            else if (item.CreatedBy.DiscordName != @Model.LoggedInUser.DiscordName)
+                            {
+                                <input type="submit" asp-action="JoinTeam" asp-route-id="@item.Id" asp-route-slot="3" value="Join" class="btn btn-primary" />
+                            }
+                            else
+                            {
+                                <span>--EMPTY--</span>
+                            }
+                        </td>
+                        <td>
+                            @if (item.MemberFour != null)
+                            {
+                                @Html.DisplayFor(modelItem => item.MemberFour.DiscordName)
+                            }
+                            else if (item.CreatedBy.DiscordName != @Model.LoggedInUser.DiscordName)
+                            {
+                                <input type="submit" asp-action="JoinTeam" asp-route-id="@item.Id" asp-route-slot="4" value="Join" class="btn btn-primary" />
+                            }
+                            else
+                            {
+                                <span>--EMPTY--</span>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartingTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ServerName)
+                        </td>
+                        <td>
+                            <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                </form>
             }
         </tbody>
     </table>
-} else
-{
-    <h3>Not Logged In</h3>
+
 }
+
 
