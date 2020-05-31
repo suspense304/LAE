@@ -43,7 +43,7 @@
                             }
                             else if (item.CreatedBy.DiscordName != @Model.LoggedInUser.DiscordName)
                             {
-                                <input type="submit" asp-action="JoinTeam" asp-route-id="@item.Id" asp-route-slot="2" value="Join" class="btn btn-primary" />
+                                <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="2" value="Join" class="btn btn-primary" />
                             }
                             else
                             {
@@ -57,7 +57,7 @@
                             }
                             else if (item.CreatedBy.DiscordName != @Model.LoggedInUser.DiscordName)
                             {
-                                <input type="submit" asp-action="JoinTeam" asp-route-id="@item.Id" asp-route-slot="3" value="Join" class="btn btn-primary" />
+                                <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="3" value="Join" class="btn btn-primary" />
                             }
                             else
                             {
@@ -71,7 +71,7 @@
                             }
                             else if (item.CreatedBy.DiscordName != @Model.LoggedInUser.DiscordName)
                             {
-                                <input type="submit" asp-action="JoinTeam" asp-route-id="@item.Id" asp-route-slot="4" value="Join" class="btn btn-primary" />
+                                <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="4" value="Join" class="btn btn-primary" />
                             }
                             else
                             {

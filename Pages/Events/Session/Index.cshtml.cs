@@ -16,6 +16,7 @@ namespace LAE.Pages.Events.Events
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
+        private EventInfo SelectedEvent { get; set; }
 
         [BindProperty]
         public ApplicationUser LoggedInUser { get; set; }
@@ -32,13 +33,38 @@ namespace LAE.Pages.Events.Events
         }
         public IList<EventInfo> EventInfo { get; set; }
 
-        [BindProperty]
-        public EventInfo SelectedEvent { get; set; }
+        //[BindProperty]
+        //public EventInfo SelectedEvent { get; set; }
 
         public async Task OnGetAsync()
         {
             LoggedInUser = await GetCurrentUser();
             EventInfo = await _context.EventInfo.Include(x => x.MemberTwo).Include(x => x.MemberThree).Include(x => x.MemberFour).Include(x => x.CreatedBy).ToListAsync();
+        }
+
+        public async Task<IActionResult> OnPostJoinTeam(int? id, int? slot)
+        {
+            ApplicationUser user = await GetCurrentUser();
+            SelectedEvent = await _context.EventInfo.FirstOrDefaultAsync(m => m.Id == id);
+
+            switch (slot)
+            {
+                case 2:
+                    SelectedEvent.MemberTwo = user;
+                    break;
+                case 3:
+                    SelectedEvent.MemberThree = user;
+                    break;
+                case 4:
+                    SelectedEvent.MemberFour = user;
+                    break;
+            }
+
+            _context.Attach(SelectedEvent).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index");
         }
 
     }
