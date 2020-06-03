@@ -46,7 +46,8 @@ namespace LAE.Pages.Events.Events
                                                 .Include(x => x.MemberThree)
                                                 .Include(x => x.MemberFour)
                                                 .Include(x => x.CreatedBy)
-                                                .Where(w => w.isActive)
+                                                .Include(x => x.Activity)
+                                                .Where(w => w.isActive && w.Activity.MinGearScore <= LoggedInUser.ItemLevel)
                                                 .OrderBy(w => w.StartingTime)
                                                 .ToListAsync();
 
@@ -61,6 +62,7 @@ namespace LAE.Pages.Events.Events
                                                     .Include(x => x.MemberThree)
                                                     .Include(x => x.MemberFour)
                                                     .Include(x => x.CreatedBy)
+                                                    .Include(x => x.Activity)
                                                     .AsQueryable().FirstOrDefaultAsync(m => m.Id == id);
 
             if(option == "Join")

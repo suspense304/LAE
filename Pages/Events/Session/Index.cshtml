@@ -11,23 +11,21 @@
     <p>
         <a asp-page="Create">Create New</a>
     </p>
-    <br />
-    <span>@Model.CurrentTime</span>
-    <br />
-    <table class="table" id="EventTable">
+    <table class="table" id="EventTable" style="width: 100%">
         <thead>
             <tr>
-                <th>Party Leader</th>
-                <th>Member #2</th>
-                <th>Member #3</th>
-                <th>Member #4</th>
+                <th>Event</th>
+                <th>GS</th>
+                <th class="d-none d-sm-none d-md-table-cell">Leader</th>
+                <th class="d-none d-sm-none d-md-table-cell">2<sup>nd</sup></th>
+                <th class="d-none d-sm-none d-md-table-cell">3<sup>rd</sup></th>
+                <th class="d-none d-sm-none d-md-table-cell">4<sup>th</sup></th>
                 <th>
-                    @Html.DisplayNameFor(model => model.EventInfo[0].StartingTime)
+                    Starts
                 </th>
                 <th>
-                    Server Name
+                    Server
                 </th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -36,10 +34,16 @@
             {
                 <form method="post">
                     <tr>
-                        <td style="width: 50px">
+                        <td style="width: 100px">
+                            @Html.DisplayFor(modelItem => item.Activity.Name)
+                        </td>
+                        <td style="width: 25px">
+                            @Html.DisplayFor(modelItem => item.Activity.MinGearScore)
+                        </td>
+                        <td class="d-none d-sm-table-cell">
                             @Html.DisplayFor(modelItem => item.CreatedBy.DisplayName)
                         </td>
-                        <td style="width: 50px">
+                        <td class="d-none d-sm-table-cell">
                             @if (item.MemberTwo != null)
                             {
                                 @Html.DisplayFor(modelItem => item.MemberTwo.DisplayName)
@@ -49,17 +53,17 @@
                                 <span>EMPTY</span>
                             }
                         </td>
-                        <td style="width: 50px">
+                        <td class="d-none d-sm-table-cell">
                             @if (item.MemberThree != null)
                             {
                                 @Html.DisplayFor(modelItem => item.MemberThree.DisplayName)
                             }
                             else
                             {
-                                <span>-EMPTY</span>
+                                <span>EMPTY</span>
                             }
                         </td>
-                        <td style="width: 50px">
+                        <td class="d-none d-sm-table-cell">
                             @if (item.MemberFour != null)
                             {
                                 @Html.DisplayFor(modelItem => item.MemberFour.DisplayName)
@@ -74,7 +78,7 @@
                         </td>
                         <td>
                         </td>
-                        <td>
+                        <td style="width: 35px">
                             @Html.DisplayFor(modelItem => item.ServerName)
                         </td>
                         <td>
@@ -180,7 +184,8 @@
                                     else if (item.MemberFour.DiscordName == @Model.LoggedInUser.DiscordName)
                                     {
                                         <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="4" asp-route-option="Leave" value="Leave" class="btn btn-danger width125" />
-                                    } else
+                                    }
+                                    else
                                     {
 
                                     }
@@ -206,9 +211,9 @@
 
             for (var i = 1, row; row = table.rows[i]; i++) {
 
-                var endDate = row.cells[4];
+                var endDate = row.cells[6];
                 countDownDate = new Date(endDate.innerHTML.replace(/-/g, "/")).getTime();
-                var countDown = row.cells[5];
+                var countDown = row.cells[7];
 
                 var now = new Date().getTime();
 

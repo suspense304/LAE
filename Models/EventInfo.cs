@@ -16,6 +16,9 @@ namespace LostArkEng.Models
         [ForeignKey("ActivityType")]
         [Required]
         public int ActivityId { get; set; }
+        public virtual Activity Activity { get; set; }
+
+
         [Required]
         public ApplicationUser CreatedBy { get; set; }
         public ApplicationUser MemberTwo { get; set; } = null!;
@@ -25,9 +28,7 @@ namespace LostArkEng.Models
         public bool isActive { get; set; }
         [ForeignKey("Server")]
         public ServerName ServerName { get; set; }
-
-        [NotMapped]
-        public virtual Activity ActivityType { get; set; }
+        
 
         [NotMapped]
         public virtual ServerName Server { get; set; }

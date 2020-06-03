@@ -4,9 +4,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using LostArkEng.Models;
 using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using LAE.Services;
 
 namespace LAE.Pages.Events.Events

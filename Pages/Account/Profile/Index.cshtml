@@ -1,0 +1,49 @@
+﻿@page
+@model LAE.Pages.Account.Profile.IndexModel
+@using LostArkEng.Models
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+@if (Model.LoggedInUser != null)
+{
+    <div class="row" style="color: #fff;">
+        <form asp-route-returnUrl="@Model.ReturnUrl" method="post" style="width: 100%">
+            <div class="col-sm-9 col-md-6 col-lg-4">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="@Model.CharacterName"></label>
+                    <input asp-for="@Model.CharacterName" class="form-control" />
+                    <span asp-validation-for="@Model.CharacterName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.DiscordName"> ex. YourName#2520</label>
+                    <input asp-for="@Model.DiscordName" class="form-control" />
+                    <span asp-validation-for="@Model.DiscordName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-sm-9 col-md-6 col-lg-4">
+
+                <div class="form-group">
+                    <label asp-for="@Model.CharClass"></label>
+                    <select asp-for="@Model.CharClass" asp-items="Html.GetEnumSelectList<ApplicationUser.CharacterClass>()" class="form-control">
+                        <option value="">--Select--</option>
+                    </select>
+                    <span asp-validation-for="@Model.CharClass" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model.GearScore"></label>
+                    <input asp-for="@Model.GearScore" class="form-control" />
+                    <span asp-validation-for="@Model.GearScore" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+}
+
+
