@@ -5,42 +5,58 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>EventInfo</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="EventInfo.ActivityId" class="control-label"></label>
-                <select asp-for="EventInfo.ActivityId" asp-items="@(new SelectList(Model.Activities, "Id", "Name"))" class="form-control">
-                    <option value="">--Select--</option>
-                </select>
-                <span asp-validation-for="EventInfo.ActivityId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EventInfo.StartingTime" class="control-label"></label>
-                <input asp-for="EventInfo.StartingTime" class="form-control" />
-                <span asp-validation-for="EventInfo.StartingTime" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="EventInfo.isActive" /> @Html.DisplayNameFor(model => model.EventInfo.isActive)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+@if (Model.LoggedInUser != null)
+{
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="EventInfo.ActivityType" class="control-label">Event</label>
+                    <select asp-for="EventTypeId"  asp-items="Model.ActivityTypes" class="form-control">
+                        <option value="">--Select--</option>
+                    </select>
+                    <span asp-validation-for="EventInfo.ActivityType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EventInfo.ActivityId" class="control-label">Event</label>
+                    <select asp-for="ActivityId" class="form-control">
+                    </select>
+                    <span asp-validation-for="EventInfo.ActivityId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EventInfo.StartingTime" class="control-label"></label>
+                    <input asp-for="EventInfo.StartingTime" class="form-control" />
+                    <span asp-validation-for="EventInfo.StartingTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-dark" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
+    <div>
+        <a asp-page="./Index">Back to List</a>
+    </div>
+}
 
 @section Scripts {
+    <script>
+        $(function () {
+            $("#EventTypeId").on("change", function () {
+                var eventId = $(this).val();
+                $("#ActivityId").empty();
+                $("#ActivityId").append("<option value=''>Select Event</option>");
+                $.getJSON(`?handler=SubEvents&EventTypeId=${eventId}`, (data) => {
+                    console.log(data);
+                    $.each(data, function (i, item) {
+                       $("#ActivityId").append($("<option>").val(item.id).text(item.name));
+                    });
+                });
+            });
+        });
+    </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

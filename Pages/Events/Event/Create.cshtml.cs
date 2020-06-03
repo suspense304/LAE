@@ -7,22 +7,35 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using LAE.Data;
 using LostArkEng.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace LAE.Pages.Events.Sessions
 {
     public class CreateModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CreateModel(LAE.Data.ApplicationDbContext context)
+        [BindProperty]
+        public ApplicationUser LoggedInUser { get; set; }
+        public CreateModel(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             Activities = _context.EventType.ToList();
+            _userManager = userManager;
         }
+
+
+        private async Task<ApplicationUser> GetCurrentUser()
+        {
+            return await _userManager.GetUserAsync(HttpContext.User);
+        }
+
         
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
+            LoggedInUser = await GetCurrentUser();
             return Page();
         }
 
@@ -41,7 +54,7 @@ namespace LAE.Pages.Events.Sessions
             Activity newAct = new Activity();
             newAct.TypeId = Activity.EventType.TypeId;
             newAct.MinGearScore = Activity.MinGearScore;
-            newAct.isActive = Activity.isActive;
+            newAct.isActive = true;
             newAct.Name = Activity.Name;
 
             _context.Actvity.Add(newAct);

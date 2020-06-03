@@ -9,6 +9,7 @@ namespace LostArkEng.Models
 {
     public class Activity
     {
+        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
 

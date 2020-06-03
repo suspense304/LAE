@@ -4,19 +4,29 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using LAE.Data;
 using LostArkEng.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace LAE.Pages.Events.Sessions
 {
     public class DeleteModel : PageModel
     {
-        private readonly LAE.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public DeleteModel(LAE.Data.ApplicationDbContext context)
+        [BindProperty]
+        public ApplicationUser LoggedInUser { get; set; }
+        public DeleteModel(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+        }
+
+
+        private async Task<ApplicationUser> GetCurrentUser()
+        {
+            return await _userManager.GetUserAsync(HttpContext.User);
         }
 
         [BindProperty]
@@ -24,6 +34,7 @@ namespace LAE.Pages.Events.Sessions
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            LoggedInUser = await GetCurrentUser();
             if (id == null)
             {
                 return NotFound();

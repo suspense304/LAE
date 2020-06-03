@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using LAE.Data;
 using LostArkEng.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace LAE.Controllers
 {
@@ -43,7 +40,7 @@ namespace LAE.Controllers
                     break;
             }
 
-            _context.Attach(SelectedEvent).State = EntityState.Modified;
+            _context.Attach(SelectedEvent).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 
             await _context.SaveChangesAsync();
 

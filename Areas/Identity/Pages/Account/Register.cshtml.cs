@@ -66,6 +66,10 @@ namespace LAE.Areas.Identity.Pages.Account
             public string DiscordName { get; set; }
 
             [Required]
+            [Display(Name = "Character Name")]
+            public string CharacterName { get; set; }
+
+            [Required]
             [Display(Name = "Character Class")]
             public int CharClass { get; set; }
 
@@ -87,7 +91,7 @@ namespace LAE.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, DiscordName = Input.DiscordName, CharClass = (ApplicationUser.CharacterClass)Input.CharClass };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, CharacterName = Input.CharacterName, DiscordName = Input.DiscordName, CharClass = (ApplicationUser.CharacterClass)Input.CharClass };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

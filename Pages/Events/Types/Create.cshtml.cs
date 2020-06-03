@@ -7,20 +7,32 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using LAE.Data;
 using LostArkEng.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace LAE.Pages.Events.Types
 {
     public class CreateModel : PageModel
     {
-        private readonly LAE.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CreateModel(LAE.Data.ApplicationDbContext context)
+        [BindProperty]
+        public ApplicationUser LoggedInUser { get; set; }
+        public CreateModel(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        public IActionResult OnGet()
+
+        private async Task<ApplicationUser> GetCurrentUser()
         {
+            return await _userManager.GetUserAsync(HttpContext.User);
+        }
+
+        public async Task<IActionResult> OnGetAsync()
+        {
+            LoggedInUser = await GetCurrentUser();
             return Page();
         }
 

@@ -10,9 +10,10 @@ namespace LostArkEng.Models
 {
     public class EventInfo
     {
+        [Key]
         public int Id { get; set; }
 
-        [ForeignKey("Activities")]
+        [ForeignKey("ActivityType")]
         [Required]
         public int ActivityId { get; set; }
         [Required]
@@ -26,10 +27,7 @@ namespace LostArkEng.Models
         public ServerName ServerName { get; set; }
 
         [NotMapped]
-        public virtual Activity ActivityInfo { get; set; }
-
-        [NotMapped]
-        public virtual ICollection<Activity> Activities { get; set; }
+        public virtual Activity ActivityType { get; set; }
 
         [NotMapped]
         public virtual ServerName Server { get; set; }

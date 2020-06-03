@@ -34,5 +34,15 @@ namespace LostArkEng.Models
         public CharacterClass CharClass { get; set; }
         public ServerName Server { get; set;  }
         public double ItemLevel { get; set; }
+
+        public string CharacterName { get; set; }
+
+        public string DisplayName
+        {
+            get
+            {
+                return DiscordName + "  " + CharacterName;
+            }
+        }
     }
 }

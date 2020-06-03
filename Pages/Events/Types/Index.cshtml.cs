@@ -8,7 +8,7 @@ using LAE.Data;
 using LostArkEng.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace LAE.Pages.Events.Sessions
+namespace LAE.Pages.Events.Types
 {
     public class IndexModel : PageModel
     {
@@ -29,12 +29,12 @@ namespace LAE.Pages.Events.Sessions
             return await _userManager.GetUserAsync(HttpContext.User);
         }
 
-        public IList<Activity> Activity { get;set; }
+        public IList<EventType> EventType { get;set; }
 
         public async Task OnGetAsync()
         {
             LoggedInUser = await GetCurrentUser();
-            Activity = await _context.Actvity.ToListAsync();
+            EventType = await _context.EventType.ToListAsync();
         }
     }
 }

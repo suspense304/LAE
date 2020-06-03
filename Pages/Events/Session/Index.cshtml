@@ -11,7 +11,10 @@
     <p>
         <a asp-page="Create">Create New</a>
     </p>
-    <table class="table">
+    <br />
+    <span>@Model.CurrentTime</span>
+    <br />
+    <table class="table" id="EventTable">
         <thead>
             <tr>
                 <th>Party Leader</th>
@@ -33,68 +36,211 @@
             {
                 <form method="post">
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CreatedBy.DiscordName)
+                        <td style="width: 50px">
+                            @Html.DisplayFor(modelItem => item.CreatedBy.DisplayName)
                         </td>
-                        <td>
+                        <td style="width: 50px">
                             @if (item.MemberTwo != null)
                             {
-                                @Html.DisplayFor(modelItem => item.MemberTwo.DiscordName)
-                            }
-                            else if (item.CreatedBy.DiscordName != @Model.LoggedInUser.DiscordName)
-                            {
-                                <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="2" value="Join" class="btn btn-primary" />
+                                @Html.DisplayFor(modelItem => item.MemberTwo.DisplayName)
                             }
                             else
                             {
-                                <span>--EMPTY--</span>
+                                <span>EMPTY</span>
                             }
                         </td>
-                        <td>
+                        <td style="width: 50px">
                             @if (item.MemberThree != null)
                             {
-                                @Html.DisplayFor(modelItem => item.MemberThree.DiscordName)
-                            }
-                            else if (item.CreatedBy.DiscordName != @Model.LoggedInUser.DiscordName)
-                            {
-                                <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="3" value="Join" class="btn btn-primary" />
+                                @Html.DisplayFor(modelItem => item.MemberThree.DisplayName)
                             }
                             else
                             {
-                                <span>--EMPTY--</span>
+                                <span>-EMPTY</span>
                             }
                         </td>
-                        <td>
+                        <td style="width: 50px">
                             @if (item.MemberFour != null)
                             {
-                                @Html.DisplayFor(modelItem => item.MemberFour.DiscordName)
-                            }
-                            else if (item.CreatedBy.DiscordName != @Model.LoggedInUser.DiscordName)
-                            {
-                                <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="4" value="Join" class="btn btn-primary" />
+                                @Html.DisplayFor(modelItem => item.MemberFour.DisplayName)
                             }
                             else
                             {
-                                <span>--EMPTY--</span>
+                                <span>EMPTY</span>
                             }
                         </td>
-                        <td>
+                        <td style="display:none;">
                             @Html.DisplayFor(modelItem => item.StartingTime)
+                        </td>
+                        <td>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ServerName)
                         </td>
                         <td>
-                            <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                            @if (item.CreatedBy.DiscordName != @Model.LoggedInUser.DiscordName)
+                            {
+                                if (item.MemberTwo != null && item.MemberThree == null && item.MemberFour == null)
+                                {
+                                    if (item.MemberTwo.DiscordName != @Model.LoggedInUser.DiscordName)
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="3" asp-route-option="Join" value="Join" class="btn btn-primary width125" />
+                                    }
+                                    else
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="2" asp-route-option="Leave" value="Leave" class="btn btn-danger width125" />
+                                    }
+                                }
+                                else if (item.MemberTwo == null && item.MemberThree != null && item.MemberFour == null)
+                                {
+                                    if (item.MemberThree.DiscordName != @Model.LoggedInUser.DiscordName)
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="2" asp-route-option="Join" value="Join" class="btn btn-primary width125" />
+                                    }
+                                    else
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="3" asp-route-option="Leave" value="Leave" class="btn btn-danger width125" />
+                                    }
+                                }
+
+                                else if (item.MemberTwo == null && item.MemberThree == null && item.MemberFour != null)
+                                {
+                                    if (item.MemberFour.DiscordName != @Model.LoggedInUser.DiscordName)
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="2" asp-route-option="Join" value="Join" class="btn btn-primary width125" />
+                                    }
+                                    else
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="4" asp-route-option="Leave" value="Leave" class="btn btn-danger width125" />
+                                    }
+                                }
+                                else if (item.MemberTwo != null && item.MemberThree != null && item.MemberFour == null)
+                                {
+                                    if (item.MemberTwo.DiscordName != @Model.LoggedInUser.DiscordName &&
+                                        item.MemberThree.DiscordName != @Model.LoggedInUser.DiscordName)
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="4" asp-route-option="Join" value="Join" class="btn btn-primary width125" />
+                                    }
+                                    else if (item.MemberTwo.DiscordName == @Model.LoggedInUser.DiscordName)
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="2" asp-route-option="Leave" value="Leave" class="btn btn-danger width125" />
+                                    }
+                                    else if (item.MemberThree.DiscordName == @Model.LoggedInUser.DiscordName)
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="3" asp-route-option="Leave" value="Leave" class="btn btn-danger width125" />
+                                    }
+                                }
+
+                                else if (item.MemberTwo == null && item.MemberThree != null && item.MemberFour != null)
+                                {
+                                    if (item.MemberThree.DiscordName != @Model.LoggedInUser.DiscordName &&
+                                        item.MemberFour.DiscordName != @Model.LoggedInUser.DiscordName)
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="2" asp-route-option="Join" value="Join" class="btn btn-primary width125" />
+                                    }
+                                    else if (item.MemberThree.DiscordName == @Model.LoggedInUser.DiscordName)
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="3" asp-route-option="Leave" value="Leave" class="btn btn-danger width125" />
+                                    }
+                                    else if (item.MemberFour.DiscordName == @Model.LoggedInUser.DiscordName)
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="4" asp-route-option="Leave" value="Leave" class="btn btn-danger width125" />
+                                    }
+                                }
+                                else if (item.MemberTwo != null && item.MemberThree == null && item.MemberFour != null)
+                                {
+                                    if (item.MemberTwo.DiscordName != @Model.LoggedInUser.DiscordName &&
+                                        item.MemberFour.DiscordName != @Model.LoggedInUser.DiscordName)
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="3" asp-route-option="Join" value="Join" class="btn btn-primary width125" />
+                                    }
+                                    else if (item.MemberTwo.DiscordName == @Model.LoggedInUser.DiscordName)
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="2" asp-route-option="Leave" value="Leave" class="btn btn-danger width125" />
+                                    }
+                                    else if (item.MemberFour.DiscordName == @Model.LoggedInUser.DiscordName)
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="4" asp-route-option="Leave" value="Leave" class="btn btn-danger width125" />
+                                    }
+                                }
+                                else if (item.MemberTwo == null && item.MemberThree == null && item.MemberFour == null)
+                                {
+                                    <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="2" asp-route-option="Join" value="Join" class="btn btn-primary width125" />
+                                }
+                                else if (item.MemberTwo != null && item.MemberThree != null && item.MemberFour != null)
+                                {
+                                    if (item.MemberTwo.DiscordName == @Model.LoggedInUser.DiscordName)
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="2" asp-route-option="Leave" value="Leave" class="btn btn-danger width125" />
+                                    }
+                                    else if (item.MemberThree.DiscordName == @Model.LoggedInUser.DiscordName)
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="3" asp-route-option="Leave" value="Leave" class="btn btn-danger width125" />
+                                    }
+                                    else if (item.MemberFour.DiscordName == @Model.LoggedInUser.DiscordName)
+                                    {
+                                        <input type="submit" asp-page-handler="JoinTeam" asp-route-id="@item.Id" asp-route-slot="4" asp-route-option="Leave" value="Leave" class="btn btn-danger width125" />
+                                    } else
+                                    {
+
+                                    }
+                                }
+                            }
+                            @if (item.CreatedBy.DiscordName == @Model.LoggedInUser.DiscordName)
+                            {
+                                <a class="btn btn-danger width125" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                            }
                         </td>
                     </tr>
                 </form>
             }
         </tbody>
     </table>
-
 }
 
+<script>
+
+    var table = document.getElementById("EventTable");
+
+    window.setInterval(function () {
+
+            for (var i = 1, row; row = table.rows[i]; i++) {
+
+                var endDate = row.cells[4];
+                countDownDate = new Date(endDate.innerHTML.replace(/-/g, "/")).getTime();
+                var countDown = row.cells[5];
+
+                var now = new Date().getTime();
+
+                var distance = countDownDate - now;
+
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+
+                if (seconds < 10) {
+                    seconds = "0" + seconds;
+                }
+
+                if (minutes < 10) {
+                    minutes = "0" + minutes;
+                }
+
+                if (days === 0)
+                {
+                    countDown.innerHTML = (hours + ":"
+                        + minutes + ":" + seconds);
+                } else if (days > 0)
+                {
+                    countDown.innerHTML = (days + " days");
+                } else
+                {
+                    clearInterval();
+                    countDown.innerHTML = "Event Over";
+                }
+            }
+        }, 1000)
+</script>
 

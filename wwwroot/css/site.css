@@ -1,16 +1,59 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+a.width125, input.width125{
+    width: 125px;
+}
 a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
 }
 
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+h1, h2, h3, h4, h5, td, tr, p, span {
+    color: #fff;
 }
+
+.control-label{
+    color: #fff;
+    font-weight: 400;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: "Source Sans Pro", Helvetica, sans-serif;
+}
+
+body{
+    height: 100%;
+}
+
+.homeBG {
+    background:
+    /* top, transparent red, faked with gradient */
+    linear-gradient( rgba(16, 15, 15, 0.94), rgba(32, 0, 0, 0.45) ),
+    url("../Images/bg-front.jpg");
+    background-color: rgba(0, 0, 0, .75);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+}
+
+/* Provide sufficient contrast against white background */
+a, a:visited {
+  color: #e5e5e5;
+}
+
+a:hover{
+    color: #fff;
+    font-size: 1.1em;
+}
+
+a:active {
+    color: #ffffff;
+}
+
 
 .btn-primary {
   color: #fff;
@@ -61,6 +104,7 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+  height: 100%;
 }
 .footer {
   position: absolute;
