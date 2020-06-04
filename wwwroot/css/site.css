@@ -10,6 +10,16 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+.hoverHighlight:hover {
+    color: #fcc500;
+    cursor: pointer;
+}
+
+.imgHoverHighlight:hover {
+    filter: invert(54%) sepia(45%) saturate(729%) hue-rotate(4deg) brightness(125%) contrast(101%);
+    cursor: pointer;
+}
+
 h1, h2, h3, h4, h5, td, tr, p, span {
     color: #fff;
 }

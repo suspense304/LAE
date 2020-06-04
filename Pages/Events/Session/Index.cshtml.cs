@@ -42,7 +42,9 @@ namespace LAE.Pages.Events.Events
             LoggedInUser = await GetCurrentUser();
             CurrentTime = DateTime.Now;
             
-            EventInfo = await _context.EventInfo.Include(x => x.MemberTwo)
+            if(LoggedInUser != null)
+            {
+                EventInfo = await _context.EventInfo.Include(x => x.MemberTwo)
                                                 .Include(x => x.MemberThree)
                                                 .Include(x => x.MemberFour)
                                                 .Include(x => x.CreatedBy)
@@ -50,7 +52,9 @@ namespace LAE.Pages.Events.Events
                                                 .Where(w => w.isActive && w.Activity.MinGearScore <= LoggedInUser.ItemLevel)
                                                 .OrderBy(w => w.StartingTime)
                                                 .ToListAsync();
-
+            }
+            
+            
             var result = _context.Database.ExecuteSqlRawAsync("EXECUTE dbo.updateEvents @timeNow={0}", CurrentTime);
         }
 
@@ -82,7 +86,18 @@ namespace LAE.Pages.Events.Events
 
                 _context.Attach(SelectedEvent).State = EntityState.Modified;
 
-                if(SelectedEvent.MemberTwo != null &
+                if (SelectedEvent.MemberTwo != null &
+                   SelectedEvent.MemberThree != null &
+                   SelectedEvent.Activity.TypeId == 3)
+                {
+                    string MemberTwo = (SelectedEvent.MemberTwo == null) ? "TestMember" : SelectedEvent.MemberTwo.DiscordName;
+                    string MemberThree = (SelectedEvent.MemberThree == null) ? "TestMember" : SelectedEvent.MemberThree.DiscordName;
+                    string EventName = _context.Actvity.AsQueryable().Where(m => m.Id == SelectedEvent.ActivityId).FirstOrDefault().Name;
+
+                    discord.Emit(SelectedEvent.CreatedBy.DiscordName, MemberTwo, MemberThree, EventName);
+                }
+
+                if (SelectedEvent.MemberTwo != null &
                    SelectedEvent.MemberThree != null &
                    SelectedEvent.MemberFour != null)
                 {

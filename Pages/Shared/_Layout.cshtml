@@ -9,7 +9,7 @@
 </head>
 <body class="homeBG">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3"  style="background-color: rgba(0, 0, 0, 0.30); color: #fff;"> 
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">LAE</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -39,9 +39,24 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted bg-dark">
+    <footer class="border-top footer" style="background-color: rgba(0, 0, 0, 0.30); color: #fff;">
         <div class="container">
-            &copy; 2020 - LAE
+            <div class="row box-shadow d-none" style="background-color: rgba(0, 0, 0, 0.30); display: flex; flex-grow: 1">
+
+                <div class="col-sm-12 col-md-4 text-center">
+                    <img src="~/Images/exitlag.png" alt="ExitLag" style="max-height: 50px;"/><br />
+                </div>
+
+                <div class="col-sm-12 col-md-4 text-center">
+                    <img src="~/Images/vpnGame.png" alt="VPN Game" style="max-height: 50px;"/><br />
+                </div>
+
+                <div class="col-sm-12 col-md-4 text-center">
+                    &copy; 2020 - LAE
+                </div>
+
+            </div>
+            
         </div>
     </footer>
 

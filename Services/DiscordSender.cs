@@ -44,6 +44,23 @@ namespace LAE.Services
             _discordWebHookClient.SendMessageAsync(string.Empty, embeds: new[] { message.Build() }, username: "LAE Discord Bot");
         }
 
+        public void Emit(string Leader, string MemberTwo, string MemberThree, string EventName)
+        {
+            var message = new EmbedBuilder()
+                    .WithAuthor("LAE Discord Bot")
+                    .WithTitle("EventName")
+                    .WithTimestamp(DateTimeOffset.UtcNow)
+                    .WithColor(Color.Red);
+
+            message.AddField(new EmbedFieldBuilder()
+                    .WithIsInline(false)
+                    .WithName("Group Members")
+                    .WithValue("Event created by: @" + Leader + " for " + EventName + " is now full! @" + MemberTwo + ", @" + MemberThree + ""));
+
+
+            _discordWebHookClient.SendMessageAsync(string.Empty, embeds: new[] { message.Build() }, username: "LAE Discord Bot");
+        }
+
         public void Dispose()
             => _discordWebHookClient.Dispose();
     }
