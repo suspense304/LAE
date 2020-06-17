@@ -1,0 +1,48 @@
+﻿@page
+@model LAE.Pages.Account.Profile.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Player Info:</h1>
+
+<div>
+    <hr />
+    <dl class="row" style="color: #fff;">
+        <dt class="col-sm-2">
+            In-game Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppUser.CharacterName)
+        </dd>
+
+        <dt class="col-sm-2">
+            Class
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppUser.CharClass)
+        </dd>
+
+        <dt class="col-sm-2">
+            Discord Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppUser.DiscordName)
+        </dd>
+
+        <dt class="col-sm-2">
+            Gear Score
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppUser.ItemLevel)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppUser.Server)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppUser.Server)
+        </dd>
+    </dl>
+</div>

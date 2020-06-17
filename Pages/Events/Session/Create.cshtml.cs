@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using LostArkEng.Models;
 using Microsoft.AspNetCore.Identity;
 using LAE.Services;
+using System;
+using System.Globalization;
+using System.Linq;
 
 namespace LAE.Pages.Events.Events
 {
@@ -27,6 +30,12 @@ namespace LAE.Pages.Events.Events
         public int ActivityId { get; set; }
         public SelectList ActivityTypes { get; set; }
 
+        public DateTime CurrentTime;
+        public DateTime ServerTime;
+
+        [BindProperty]
+        public string ErrorMessage { get; set; }
+
         public CreateModel(Data.ApplicationDbContext context, UserManager<ApplicationUser> userManager, IEventService eventService)
         {
             _context = context;
@@ -46,6 +55,8 @@ namespace LAE.Pages.Events.Events
         public async Task OnGetAsync()
         {
             LoggedInUser = await GetCurrentUser();
+            CurrentTime = DateTime.Now;
+            ServerTime = DateTime.UtcNow.AddHours(3);
             ActivityTypes =  new SelectList(_eventService.GetEvents(),
                 nameof(EventType.TypeId), nameof(EventType.Type));
         }
@@ -55,23 +66,39 @@ namespace LAE.Pages.Events.Events
         {
             ApplicationUser user = await GetCurrentUser();
 
+            decimal diff = (int)DateTime.UtcNow.AddHours(3).Subtract(DateTime.Now).TotalMinutes;
+            DateTime newTime = EventInfo.StartingTime.AddMinutes((double)diff);
+
+
             EventInfo newEvent = new EventInfo();
             newEvent.ActivityId = EventInfo.ActivityId;
             newEvent.CreatedBy = user;
             newEvent.isActive = true;
-            newEvent.StartingTime = EventInfo.StartingTime;
+            newEvent.StartingTime = newTime;
             newEvent.ServerName = user.Server;
 
-            //if (!ModelState.IsValid)
-            //{
-            //    return Page();
-            //}
+            int activeCount = _context.EventInfo.AsQueryable().Where(w => w.CreatedBy == user && w.isActive == true).ToList().Count;
 
-            _context.EventInfo.Add(newEvent);
+            if(activeCount == 0)
+            {
+                _context.EventInfo.Add(newEvent);
 
-            await _context.SaveChangesAsync();
+                DiscordSender discordOpen = new DiscordSender(722102560722386975, "1Ty2jGrVK46OuSlFwOrp82tCjFIO8ngAhG6TiDQHOw63s7innCp8K654KQIKQLN77fBO", CultureInfo.CurrentCulture);
+                string EventName = _context.Actvity.AsQueryable().Where(m => m.Id == newEvent.ActivityId).FirstOrDefault().Name;
+                discordOpen.EmitOpenGroup(newEvent.CreatedBy.DiscordName, EventName);
 
-            return RedirectToPage("./Index");
+                await _context.SaveChangesAsync();
+                ErrorMessage = "";
+                return RedirectToPage("./Index");
+            }
+            else
+            {
+                ErrorMessage = "You can't create more than one event at a time!";
+                return Page();
+            }
+            
+
+            
         }
     }
 }

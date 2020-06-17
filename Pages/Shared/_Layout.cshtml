@@ -9,7 +9,7 @@
 </head>
 <body class="homeBG">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3"  style="background-color: rgba(0, 0, 0, 0.30); color: #fff;"> 
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark box-shadow mb-3"  style="background-color: rgba(0, 0, 0, 0.30); color: #fff;"> 
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">LAE</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -25,9 +25,6 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-page="/Events/Session/Create">Create Group</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Events/Event/Create">Create Event</a>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -39,16 +36,16 @@
         </main>
     </div>
 
-    <footer class="border-top footer" style="background-color: rgba(0, 0, 0, 0.30); color: #fff;">
+    <footer class="footer" style="background-color: rgba(0, 0, 0, 0.30); color: #fff;">
         <div class="container">
-            <div class="row box-shadow d-none" style="background-color: rgba(0, 0, 0, 0.30); display: flex; flex-grow: 1">
+            <div class="row box-shadow d-none d-md-flex" style="background-color: rgba(0, 0, 0, 0.30); display: flex; flex-grow: 1">
 
                 <div class="col-sm-12 col-md-4 text-center">
-                    <img src="~/Images/exitlag.png" alt="ExitLag" style="max-height: 50px;"/><br />
-                </div>
+                    <a href="https://www.exitlag.com/" target="_blank"><img src="~/Images/exitlag.png" alt="ExitLag" style="max-height: 50px;" /></a><br />
+</div>
 
                 <div class="col-sm-12 col-md-4 text-center">
-                    <img src="~/Images/vpnGame.png" alt="VPN Game" style="max-height: 50px;"/><br />
+                    <a href="https://vpngame.net/" target="_blank"><img src="~/Images/vpnGame.png" alt="VPN Game" style="max-height: 50px;"/></a><br />
                 </div>
 
                 <div class="col-sm-12 col-md-4 text-center">

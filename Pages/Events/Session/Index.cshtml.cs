@@ -19,6 +19,7 @@ namespace LAE.Pages.Events.Events
         private readonly UserManager<ApplicationUser> _userManager;
 
         public DateTime CurrentTime;
+        public DateTime ServerTime;
 
         private EventInfo SelectedEvent { get; set; }
 
@@ -37,12 +38,22 @@ namespace LAE.Pages.Events.Events
         }
         public IList<EventInfo> EventInfo { get; set; }
 
+
+        public DateTime ConvertTime(DateTime dbTime)
+        {
+            DateTime local = DateTime.UtcNow;
+            DateTime server = DateTime.UtcNow.AddHours(3);
+            decimal diff = (int)(server.Subtract(local).TotalMinutes);
+            dbTime = dbTime.AddMinutes(-(double)diff);
+            return new DateTime(dbTime.Year, dbTime.Month, dbTime.Day, dbTime.Hour, dbTime.Minute, dbTime.Second);
+        }
         public async Task OnGetAsync()
         {
             LoggedInUser = await GetCurrentUser();
             CurrentTime = DateTime.Now;
-            
-            if(LoggedInUser != null)
+            ServerTime = DateTime.UtcNow.AddHours(3);
+
+            if (LoggedInUser != null)
             {
                 EventInfo = await _context.EventInfo.Include(x => x.MemberTwo)
                                                 .Include(x => x.MemberThree)
@@ -53,15 +64,15 @@ namespace LAE.Pages.Events.Events
                                                 .OrderBy(w => w.StartingTime)
                                                 .ToListAsync();
             }
-            
-            
-            var result = _context.Database.ExecuteSqlRawAsync("EXECUTE dbo.updateEvents @timeNow={0}", CurrentTime);
+
+
+            var result = _context.Database.ExecuteSqlRawAsync("EXECUTE dbo.updateEvents @timeNow={0}", ServerTime);
         }
 
         public async Task<IActionResult> OnPostJoinTeam(int? id, int? slot, string? option)
         {
             ApplicationUser user = await GetCurrentUser();
-            DiscordSender discord = new DiscordSender(717523711694995487, "jtf8VSXM6ht8H9JlRG9gkBWcgHijFRe9TXISgOU0bO4qtQr8oaVYaJaRmPiNweMFehS0", CultureInfo.CurrentCulture);
+            
             SelectedEvent = await _context.EventInfo.Include(x => x.MemberTwo)
                                                     .Include(x => x.MemberThree)
                                                     .Include(x => x.MemberFour)
@@ -69,7 +80,7 @@ namespace LAE.Pages.Events.Events
                                                     .Include(x => x.Activity)
                                                     .AsQueryable().FirstOrDefaultAsync(m => m.Id == id);
 
-            if(option == "Join")
+            if (option == "Join")
             {
                 switch (slot)
                 {
@@ -90,30 +101,48 @@ namespace LAE.Pages.Events.Events
                    SelectedEvent.MemberThree != null &
                    SelectedEvent.Activity.TypeId == 3)
                 {
-                    string MemberTwo = (SelectedEvent.MemberTwo == null) ? "TestMember" : SelectedEvent.MemberTwo.DiscordName;
-                    string MemberThree = (SelectedEvent.MemberThree == null) ? "TestMember" : SelectedEvent.MemberThree.DiscordName;
+                    DiscordSender discord = new DiscordSender(717523711694995487, "jtf8VSXM6ht8H9JlRG9gkBWcgHijFRe9TXISgOU0bO4qtQr8oaVYaJaRmPiNweMFehS0", CultureInfo.CurrentCulture);
+                    string MemberTwo = SelectedEvent.MemberTwo.DiscordName;
+                    string MemberThree = SelectedEvent.MemberThree.DiscordName;
                     string EventName = _context.Actvity.AsQueryable().Where(m => m.Id == SelectedEvent.ActivityId).FirstOrDefault().Name;
 
+                    SelectedEvent.isActive = false;
                     discord.Emit(SelectedEvent.CreatedBy.DiscordName, MemberTwo, MemberThree, EventName);
                 }
 
-                if (SelectedEvent.MemberTwo != null &
+                else if (SelectedEvent.MemberTwo != null &
                    SelectedEvent.MemberThree != null &
                    SelectedEvent.MemberFour != null)
                 {
-                    string MemberTwo = (SelectedEvent.MemberTwo == null) ? "TestMember" : SelectedEvent.MemberTwo.DiscordName;
-                    string MemberThree = (SelectedEvent.MemberThree == null) ? "TestMember" : SelectedEvent.MemberThree.DiscordName;
-                    string MemberFour = (SelectedEvent.MemberFour == null) ? "TestMember" : SelectedEvent.MemberFour.DiscordName;
+                    DiscordSender discord = new DiscordSender(717523711694995487, "jtf8VSXM6ht8H9JlRG9gkBWcgHijFRe9TXISgOU0bO4qtQr8oaVYaJaRmPiNweMFehS0", CultureInfo.CurrentCulture);
+                    string MemberTwo = SelectedEvent.MemberTwo.DiscordName;
+                    string MemberThree = SelectedEvent.MemberThree.DiscordName;
+                    string MemberFour = SelectedEvent.MemberFour.DiscordName;
                     string EventName = _context.Actvity.AsQueryable().Where(m => m.Id == SelectedEvent.ActivityId).FirstOrDefault().Name;
 
+                    SelectedEvent.isActive = false;
                     discord.Emit(SelectedEvent.CreatedBy.DiscordName, MemberTwo, MemberThree, MemberFour, EventName);
                 }
-                
 
+                else if(SelectedEvent.MemberTwo != null & SelectedEvent.MemberThree != null)
+                {
+                    DiscordSender discordOpen = new DiscordSender(722102560722386975, "1Ty2jGrVK46OuSlFwOrp82tCjFIO8ngAhG6TiDQHOw63s7innCp8K654KQIKQLN77fBO", CultureInfo.CurrentCulture);
+                    string MemberTwo = SelectedEvent.MemberTwo.DiscordName;
+                    string MemberThree = SelectedEvent.MemberThree.DiscordName;
+                    string EventName = _context.Actvity.AsQueryable().Where(m => m.Id == SelectedEvent.ActivityId).FirstOrDefault().Name;
+                    discordOpen.EmitOpenGroup(SelectedEvent.CreatedBy.DiscordName, MemberTwo, MemberThree, EventName);
+                }
+                else
+                {
+                    DiscordSender discordOpen = new DiscordSender(722102560722386975, "1Ty2jGrVK46OuSlFwOrp82tCjFIO8ngAhG6TiDQHOw63s7innCp8K654KQIKQLN77fBO", CultureInfo.CurrentCulture);
+                    string MemberTwo = SelectedEvent.MemberTwo.DiscordName;
+                    string EventName = _context.Actvity.AsQueryable().Where(m => m.Id == SelectedEvent.ActivityId).FirstOrDefault().Name;
+                    discordOpen.EmitOpenGroup(SelectedEvent.CreatedBy.DiscordName, MemberTwo, EventName);
+                }
                 await _context.SaveChangesAsync();
             }
-
-            if(option == "Leave")
+            
+            if (option == "Leave")
             {
                 switch (slot)
                 {
@@ -132,7 +161,7 @@ namespace LAE.Pages.Events.Events
 
                 await _context.SaveChangesAsync();
             }
-            
+
 
             return RedirectToPage("./Index");
         }

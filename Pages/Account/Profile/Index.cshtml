@@ -10,39 +10,111 @@
 {
     <div class="row" style="color: #fff;">
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post" style="width: 100%">
-            <div class="col-sm-9 col-md-6 col-lg-4">
+            <div class="col-sm-9 col-md-6 col-lg-6">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="@Model.CharacterName"></label>
-                    <input asp-for="@Model.CharacterName" class="form-control" />
-                    <span asp-validation-for="@Model.CharacterName" class="text-danger"></span>
+                    <label asp-for="Input.CharacterName"></label>
+                    <input asp-for="Input.CharacterName" class="form-control" />
+                    <span asp-validation-for="Input.CharacterName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="@Model.DiscordName"> ex. YourName#2520</label>
-                    <input asp-for="@Model.DiscordName" class="form-control" />
-                    <span asp-validation-for="@Model.DiscordName" class="text-danger"></span>
+                    <label asp-for="Input.DiscordName"> ex. YourName#2520</label>
+                    <input asp-for="Input.DiscordName" class="form-control" />
+                    <span asp-validation-for="Input.DiscordName" class="text-danger"></span>
                 </div>
             </div>
 
-            <div class="col-sm-9 col-md-6 col-lg-4">
+            <div class="col-sm-9 col-md-6 col-lg-6">
 
                 <div class="form-group">
-                    <label asp-for="@Model.CharClass"></label>
-                    <select asp-for="@Model.CharClass" asp-items="Html.GetEnumSelectList<ApplicationUser.CharacterClass>()" class="form-control">
-                        <option value="">--Select--</option>
+                    <label asp-for="Input.CharClass"></label>
+                    <select asp-for="Input.CharClass" asp-items="Html.GetEnumSelectList<ApplicationUser.CharacterClass>()" class="form-control">
                     </select>
-                    <span asp-validation-for="@Model.CharClass" class="text-danger"></span>
+                    <span asp-validation-for="Input.CharClass" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="@Model.GearScore"></label>
-                    <input asp-for="@Model.GearScore" class="form-control" />
-                    <span asp-validation-for="@Model.GearScore" class="text-danger"></span>
+                    <label asp-for="Input.GearScore"></label>
+                    <input asp-for="Input.GearScore" class="form-control" />
+                    <span asp-validation-for="Input.GearScore" class="text-danger"></span>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">Update</button>
+            <div class="row col-sm-9 col-md-6 col-lg-6">
+                <div class="col-sm-12 col-md-6">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Change Password</a>
+                </div>
+            </div>
         </form>
+    </div>
+    <br/>
+
+    <h3>Group History</h3>
+    <div class="row col-md-12">
+        <table class="table" id="EventTable" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th class="d-none d-sm-none d-md-table-cell">Leader</th>
+                    <th class="d-none d-sm-none d-md-table-cell">2<sup>nd</sup></th>
+                    <th class="d-none d-sm-none d-md-table-cell">3<sup>rd</sup></th>
+                    <th class="d-none d-sm-none d-md-table-cell">4<sup>th</sup></th>
+                    <th class="d-none d-sm-none d-md-table-cell">Time</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model.EventInfo)
+                {
+                    <form method="post">
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Activity.Name)
+                            </td>
+                            <td class="d-none d-sm-table-cell">
+                                <a asp-page="../../Account/Profile/Details" asp-route-id="@item.CreatedBy.Id"><img class="imgHoverHighlight" src="\Images\classes\@(item.CreatedBy.GetClassIcon(item.CreatedBy.CharClass)).png" title="@item.CreatedBy.DisplayName" /></a>
+                            </td>
+                            <td class="d-none d-sm-table-cell">
+                                @if (item.MemberTwo != null)
+                                {
+                                    <a asp-page="../../Account/Profile/Details" asp-route-id="@item.MemberTwo.Id"><img class="imgHoverHighlight" src="\Images\classes\@(item.MemberTwo.GetClassIcon(item.MemberTwo.CharClass)).png" title="@item.MemberTwo.DisplayName" /></a>
+                                }
+                                else
+                                {
+                                    <span>EMPTY</span>
+                                }
+                            </td>
+                            <td class="d-none d-sm-table-cell">
+                                @if (item.MemberThree != null)
+                                {
+                                    <a asp-page="../../Account/Profile/Details" asp-route-id="@item.MemberThree.Id"><img class="imgHoverHighlight" src="\Images\classes\@(item.MemberThree.GetClassIcon(item.MemberThree.CharClass)).png" title="@item.MemberThree.DisplayName" /></a>
+                                }
+                                else
+                                {
+                                    <span>EMPTY</span>
+                                }
+                            </td>
+                            <td class="d-none d-sm-table-cell">
+                                @if (item.MemberFour != null)
+                                {
+                                    <a asp-page="../../Account/Profile/Details" asp-route-id="@item.MemberFour.Id"><img class="imgHoverHighlight" src="\Images\classes\@(item.MemberFour.GetClassIcon(item.MemberFour.CharClass)).png" title="@item.MemberFour.DisplayName" /></a>
+                                }
+                                else
+                                {
+                                    <span>EMPTY</span>
+                                }
+                            </td>
+                            <td class="d-none d-sm-table-cell">
+                                @Html.DisplayFor(modelItem => item.StartingTime)
+                            </td>
+                        </tr>
+                    </form>
+                }
+            </tbody>
+        </table>
     </div>
 }
 

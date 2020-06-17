@@ -24,7 +24,7 @@ namespace LostArkEng.Models
         public ApplicationUser MemberTwo { get; set; } = null!;
         public ApplicationUser MemberThree { get; set; } = null!;
         public ApplicationUser MemberFour { get; set; } = null!;
-        public DateTime StartingTime { get; set; } = DateTime.Now.AddMinutes(30);
+        public DateTime StartingTime { get; set; } = DateTime.UtcNow;
         public bool isActive { get; set; }
         [ForeignKey("Server")]
         public ServerName ServerName { get; set; }

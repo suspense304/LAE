@@ -11,7 +11,9 @@
     <p>
         <a asp-page="Create">Create New</a>
     </p>
-    <table class="table" id="EventTable" style="width: 100%">
+    <br />
+    <span>Last Refresh(Server Time): @Model.ServerTime</span>
+    <table class="table text-center" id="EventTable" style="width: 100%">
         <thead>
             <tr>
                 <th>Event</th>
@@ -41,12 +43,12 @@
                             @Html.DisplayFor(modelItem => item.Activity.MinGearScore)
                         </td>
                         <td class="d-none d-sm-table-cell">
-                            @Html.DisplayFor(modelItem => item.CreatedBy.DisplayName)
+                            <a asp-page="../../Account/Profile/Details" asp-route-id="@item.CreatedBy.Id"><img class="imgHoverHighlight" src="\Images\classes\@(item.CreatedBy.GetClassIcon(item.CreatedBy.CharClass)).png" title="@item.CreatedBy.DisplayName" /></a>
                         </td>
                         <td class="d-none d-sm-table-cell">
                             @if (item.MemberTwo != null)
                             {
-                                @Html.DisplayFor(modelItem => item.MemberTwo.DisplayName)
+                                <a asp-page="../../Account/Profile/Details" asp-route-id="@item.MemberTwo.Id"><img class="imgHoverHighlight" src="\Images\classes\@(item.MemberTwo.GetClassIcon(item.MemberTwo.CharClass)).png" title="@item.MemberTwo.DisplayName" /></a>
                             }
                             else
                             {
@@ -56,7 +58,7 @@
                         <td class="d-none d-sm-table-cell">
                             @if (item.MemberThree != null)
                             {
-                                @Html.DisplayFor(modelItem => item.MemberThree.DisplayName)
+                                <a asp-page="../../Account/Profile/Details" asp-route-id="@item.MemberThree.Id"><img class="imgHoverHighlight" src="\Images\classes\@(item.MemberThree.GetClassIcon(item.MemberThree.CharClass)).png" title="@item.MemberThree.DisplayName" /></a>
                             }
                             else
                             {
@@ -66,7 +68,7 @@
                         <td class="d-none d-sm-table-cell">
                             @if (item.MemberFour != null)
                             {
-                                @Html.DisplayFor(modelItem => item.MemberFour.DisplayName)
+                                <a asp-page="../../Account/Profile/Details" asp-route-id="@item.MemberThree.Id"><img class="imgHoverHighlight" src="\Images\classes\@(item.MemberFour.GetClassIcon(item.MemberFour.CharClass)).png" title="@item.MemberFour.DisplayName" /></a>
                             }
                             else
                             {
@@ -74,7 +76,8 @@
                             }
                         </td>
                         <td style="display:none;">
-                            @Html.DisplayFor(modelItem => item.StartingTime)
+                            @Model.ConvertTime(item.StartingTime);
+                            @*@item.StartingTime*@
                         </td>
                         <td>
                         </td>
@@ -202,50 +205,61 @@
         </tbody>
     </table>
 }
+else
+{
+    <h3>You are not logged in!</h3>
+}
 
 <script>
+
+    setTimeout(function () {
+        location.reload();
+    }, 15000);
 
     var table = document.getElementById("EventTable");
 
     window.setInterval(function () {
 
-            for (var i = 1, row; row = table.rows[i]; i++) {
+        for (var i = 1, row; row = table.rows[i]; i++) {
 
-                var endDate = row.cells[6];
-                countDownDate = new Date(endDate.innerHTML.replace(/-/g, "/")).getTime();
-                var countDown = row.cells[7];
+            var endDate = row.cells[6];
+            countDownDate = new Date(endDate.innerHTML.replace(/-/g, "/")).getTime();
+            var countDown = row.cells[7];
 
-                var now = new Date().getTime();
+            var utcDate = new Date();
+            utcDate.toUTCString();
 
-                var distance = countDownDate - now;
+            var now = new Date(utcDate.getUTCFullYear(), utcDate.getUTCMonth(), utcDate.getUTCDate(), utcDate.getUTCHours(), utcDate.getUTCMinutes(), utcDate.getUTCSeconds());
 
-                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            now = now.getTime();
+            //var now = new Date().getTime();
+
+            var distance = countDownDate - now;
+
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
 
-                if (seconds < 10) {
-                    seconds = "0" + seconds;
-                }
-
-                if (minutes < 10) {
-                    minutes = "0" + minutes;
-                }
-
-                if (days === 0)
-                {
-                    countDown.innerHTML = (hours + ":"
-                        + minutes + ":" + seconds);
-                } else if (days > 0)
-                {
-                    countDown.innerHTML = (days + " days");
-                } else
-                {
-                    clearInterval();
-                    countDown.innerHTML = "Event Over";
-                }
+            if (seconds < 10) {
+                seconds = "0" + seconds;
             }
-        }, 1000)
+
+            if (minutes < 10) {
+                minutes = "0" + minutes;
+            }
+
+            if (days === 0) {
+                countDown.innerHTML = (hours + ":"
+                    + minutes + ":" + seconds);
+            } else if (days > 0) {
+                countDown.innerHTML = (days + " days");
+            } else {
+                clearInterval();
+                countDown.innerHTML = "Event Over";
+            }
+        }
+    }, 1000)
 </script>
 

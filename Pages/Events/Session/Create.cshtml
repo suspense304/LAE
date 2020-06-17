@@ -9,12 +9,16 @@
 {
     <hr />
     <div class="row">
-        <div class="col-md-4">
+
+        <div class="col-md-6">
+            <span>In-Game Time: @Model.ServerTime</span><br />
+            <span>Website Time: @Model.CurrentTime</span><br />
+            <span style="color: red; font-weight: 800; font-size: 1.05em;">@Model.ErrorMessage</span><br />
             <form method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="EventInfo.Activity" class="control-label">Event</label>
-                    <select asp-for="EventTypeId"  asp-items="Model.ActivityTypes" class="form-control">
+                    <label asp-for="EventInfo.Activity" class="control-label">Event Type</label>
+                    <select asp-for="EventTypeId" asp-items="Model.ActivityTypes" class="form-control">
                         <option value="">--Select--</option>
                     </select>
                     <span asp-validation-for="EventInfo.Activity" class="text-danger"></span>
@@ -26,7 +30,7 @@
                     <span asp-validation-for="EventInfo.ActivityId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="EventInfo.StartingTime" class="control-label"></label>
+                    <label asp-for="EventInfo.StartingTime" class="control-label">Time will be converted to Server Time Automatically</label>
                     <input asp-for="EventInfo.StartingTime" class="form-control" />
                     <span asp-validation-for="EventInfo.StartingTime" class="text-danger"></span>
                 </div>
@@ -41,7 +45,10 @@
         <a asp-page="./Index">Back to List</a>
     </div>
 }
-
+else
+{
+    <h3>You are not logged in!</h3>
+}
 @section Scripts {
     <script>
         $(function () {
@@ -52,7 +59,7 @@
                 $.getJSON(`?handler=SubEvents&EventTypeId=${eventId}`, (data) => {
                     console.log(data);
                     $.each(data, function (i, item) {
-                       $("#ActivityId").append($("<option>").val(item.id).text(item.name));
+                        $("#ActivityId").append($("<option>").val(item.id).text(item.name));
                     });
                 });
             });

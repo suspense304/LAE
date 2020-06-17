@@ -41,7 +41,10 @@
         <a asp-page="Index">Back to List</a>
     </div>
 }
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
-            
+else
+{
+    <h3>You are not logged in!</h3>
+}
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

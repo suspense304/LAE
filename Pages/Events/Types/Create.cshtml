@@ -29,7 +29,11 @@
         <a asp-page="./List">Back to List</a>
     </div>
 }
+else
+{
+    <h3>You are not logged in!</h3>
+}
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

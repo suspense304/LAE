@@ -31,7 +31,7 @@ namespace LAE.Services
         {
             var message = new EmbedBuilder()
                     .WithAuthor("LAE Discord Bot")
-                    .WithTitle("EventName")
+                    .WithTitle(EventName)
                     .WithTimestamp(DateTimeOffset.UtcNow)
                     .WithColor(Color.Red);
 
@@ -48,7 +48,7 @@ namespace LAE.Services
         {
             var message = new EmbedBuilder()
                     .WithAuthor("LAE Discord Bot")
-                    .WithTitle("EventName")
+                    .WithTitle(EventName)
                     .WithTimestamp(DateTimeOffset.UtcNow)
                     .WithColor(Color.Red);
 
@@ -56,6 +56,57 @@ namespace LAE.Services
                     .WithIsInline(false)
                     .WithName("Group Members")
                     .WithValue("Event created by: @" + Leader + " for " + EventName + " is now full! @" + MemberTwo + ", @" + MemberThree + ""));
+
+
+            _discordWebHookClient.SendMessageAsync(string.Empty, embeds: new[] { message.Build() }, username: "LAE Discord Bot");
+        }
+
+        public void EmitOpenGroup(string Leader, string EventName)
+        {
+            var message = new EmbedBuilder()
+                    .WithAuthor("LAE Discord Bot")
+                    .WithTitle(EventName)
+                    .WithTimestamp(DateTimeOffset.UtcNow)
+                    .WithColor(Color.Red);
+
+            message.AddField(new EmbedFieldBuilder()
+                    .WithIsInline(false)
+                    .WithName("Group Members")
+                    .WithValue("Event created by: @" + Leader + " for " + EventName + " has been created!"));
+
+
+            _discordWebHookClient.SendMessageAsync(string.Empty, embeds: new[] { message.Build() }, username: "LAE Discord Bot");
+        }
+
+        public void EmitOpenGroup(string Leader, string MemberTwo, string EventName)
+        {
+            var message = new EmbedBuilder()
+                    .WithAuthor("LAE Discord Bot")
+                    .WithTitle(EventName)
+                    .WithTimestamp(DateTimeOffset.UtcNow)
+                    .WithColor(Color.Red);
+
+            message.AddField(new EmbedFieldBuilder()
+                    .WithIsInline(false)
+                    .WithName("Group Members")
+                    .WithValue(MemberTwo + " has now joined " + EventName + " created by: " + Leader));
+
+
+            _discordWebHookClient.SendMessageAsync(string.Empty, embeds: new[] { message.Build() }, username: "LAE Discord Bot");
+        }
+
+        public void EmitOpenGroup(string Leader, string MemberTwo, string MemberThree, string EventName)
+        {
+            var message = new EmbedBuilder()
+                    .WithAuthor("LAE Discord Bot")
+                    .WithTitle(EventName)
+                    .WithTimestamp(DateTimeOffset.UtcNow)
+                    .WithColor(Color.Red);
+
+            message.AddField(new EmbedFieldBuilder()
+                    .WithIsInline(false)
+                    .WithName("Group Members")
+                    .WithValue(MemberThree + " has now joined " + MemberTwo + " for " + EventName + " created by: " + Leader));
 
 
             _discordWebHookClient.SendMessageAsync(string.Empty, embeds: new[] { message.Build() }, username: "LAE Discord Bot");

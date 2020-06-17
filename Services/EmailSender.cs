@@ -28,8 +28,9 @@ namespace LAE.Services
 
         public Task Execute(string apiKey, string subject, string message, string email)
         {
-            var client = new SendGridClient(apiKey);
-            
+            var client = new SendGridClient("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");
+
+
             var msg = new SendGridMessage()
             {
                 From = new EmailAddress("Admin@lostark-eng.com", Options.SendGridUser),
