@@ -12,6 +12,14 @@
     <Compile Remove="Data\Migrations\20200530011817_UpdateDB.Designer.cs" />
     <Compile Remove="Data\Migrations\20200603154418_Test.cs" />
     <Compile Remove="Data\Migrations\20200603154418_Test.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200618194937_PartyInfo.cs" />
+    <Compile Remove="Data\Migrations\20200618194937_PartyInfo.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200619033040_ICollectionMembers.cs" />
+    <Compile Remove="Data\Migrations\20200619033040_ICollectionMembers.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200619044730_CreatorId.cs" />
+    <Compile Remove="Data\Migrations\20200619044730_CreatorId.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200619045154_Test.cs" />
+    <Compile Remove="Data\Migrations\20200619045154_Test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

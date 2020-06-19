@@ -18,6 +18,7 @@ namespace LostArkEng.Models
         public int TypeId { get; set; }
         public int MinGearScore { get; set; }
         public bool isActive { get; set; }
+        public int PartySize { get; set; }
 
         [NotMapped]
         public virtual EventType EventType { get; set; }

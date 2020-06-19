@@ -4,14 +4,16 @@ using LAE.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LAE.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200618195142_PartyInfo")]
+    partial class PartyInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,10 +28,10 @@ namespace LAE.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("PartyId")
+                    b.Property<int?>("InfoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PartyInfoId")
+                    b.Property<int>("PartyId")
                         .HasColumnType("int");
 
                     b.Property<string>("PartyNameId")
@@ -38,7 +40,7 @@ namespace LAE.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PartyInfoId");
+                    b.HasIndex("InfoId");
 
                     b.HasIndex("PartyNameId");
 
@@ -58,9 +60,6 @@ namespace LAE.Data.Migrations
                     b.Property<string>("CreatedById")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("PartyMembers")
-                        .HasColumnType("int");
 
                     b.Property<int>("PartySize")
                         .HasColumnType("int");
@@ -389,9 +388,9 @@ namespace LAE.Data.Migrations
 
             modelBuilder.Entity("LAE.Models.Party", b =>
                 {
-                    b.HasOne("LAE.Models.PartyInfo", "PartyInfo")
-                        .WithMany("Members")
-                        .HasForeignKey("PartyInfoId");
+                    b.HasOne("LAE.Models.PartyInfo", "Info")
+                        .WithMany()
+                        .HasForeignKey("InfoId");
 
                     b.HasOne("LostArkEng.Models.ApplicationUser", "PartyName")
                         .WithMany()

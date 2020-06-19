@@ -27,6 +27,23 @@ namespace LAE.Services
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
         }
+
+        public void Emit(string Leader, string Members, string EventName)
+        {
+            var message = new EmbedBuilder()
+                    .WithAuthor("LAE Discord Bot")
+                    .WithTitle(EventName)
+                    .WithTimestamp(DateTimeOffset.UtcNow)
+                    .WithColor(Color.Red);
+
+            message.AddField(new EmbedFieldBuilder()
+                    .WithIsInline(false)
+                    .WithName("Group Members")
+                    .WithValue("Event created by: @" + Leader + " for " + EventName + " is now full! " + Members + ""));
+
+
+            _discordWebHookClient.SendMessageAsync(string.Empty, embeds: new[] { message.Build() }, username: "LAE Discord Bot");
+        }
         public void Emit(string Leader, string MemberTwo, string MemberThree, string MemberFour, string EventName)
         {
             var message = new EmbedBuilder()
@@ -78,7 +95,7 @@ namespace LAE.Services
             _discordWebHookClient.SendMessageAsync(string.Empty, embeds: new[] { message.Build() }, username: "LAE Discord Bot");
         }
 
-        public void EmitOpenGroup(string Leader, string MemberTwo, string EventName)
+        public void EmitOpenGroup(string Leader, string Member, string EventName)
         {
             var message = new EmbedBuilder()
                     .WithAuthor("LAE Discord Bot")
@@ -89,7 +106,7 @@ namespace LAE.Services
             message.AddField(new EmbedFieldBuilder()
                     .WithIsInline(false)
                     .WithName("Group Members")
-                    .WithValue(MemberTwo + " has now joined " + EventName + " created by: " + Leader));
+                    .WithValue(Member + " joined " + EventName + " created by: " + Leader));
 
 
             _discordWebHookClient.SendMessageAsync(string.Empty, embeds: new[] { message.Build() }, username: "LAE Discord Bot");

@@ -10,5 +10,6 @@ namespace LAE.Services
     {
         IEnumerable<EventType> GetEvents();
         IEnumerable<Activity> GetSubEvents(int categoryId);
+
     }
 }

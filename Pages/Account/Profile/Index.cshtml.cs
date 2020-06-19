@@ -20,7 +20,7 @@ namespace LAE.Pages.Account.Profile
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public IList<EventInfo> EventInfo { get; set; }
+        public IList<PartyInfo> PartyInfo { get; set; }
 
         [BindProperty]
         public ApplicationUser LoggedInUser { get; set; }
@@ -41,16 +41,10 @@ namespace LAE.Pages.Account.Profile
 
             if (LoggedInUser != null)
             {
-                EventInfo = await _context.EventInfo.Include(x => x.MemberTwo)
-                                                .Include(x => x.MemberThree)
-                                                .Include(x => x.MemberFour)
-                                                .Include(x => x.CreatedBy)
+                PartyInfo = await _context.PartyInfo.Include(x => x.CreatedBy)
                                                 .Include(x => x.Activity)
-                                                .Where(w => w.CreatedBy == LoggedInUser ||
-                                                            w.MemberTwo == LoggedInUser ||
-                                                            w.MemberThree == LoggedInUser ||
-                                                            w.MemberFour == LoggedInUser
-                                                ).OrderBy(w => w.StartingTime)
+                                                .Where(w => w.CreatedBy == LoggedInUser)
+                                                .OrderBy(w => w.StartingTime)
                                                 .ToListAsync();
             }
 

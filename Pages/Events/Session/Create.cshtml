@@ -17,22 +17,34 @@
             <form method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="EventInfo.Activity" class="control-label">Event Type</label>
+                    <label asp-for="PartyInfo.Activity" class="control-label">Event Type</label>
                     <select asp-for="EventTypeId" asp-items="Model.ActivityTypes" class="form-control">
                         <option value="">--Select--</option>
                     </select>
-                    <span asp-validation-for="EventInfo.Activity" class="text-danger"></span>
+                    <span asp-validation-for="PartyInfo.Activity" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="EventInfo.ActivityId" class="control-label">Event</label>
-                    <select id="ActivityId" asp-for="EventInfo.ActivityId" class="form-control">
+                    <label asp-for="PartyInfo.ActivityId" class="control-label">Event</label>
+                    <select id="ActivityId" asp-for="PartyInfo.ActivityId" class="form-control">
                     </select>
-                    <span asp-validation-for="EventInfo.ActivityId" class="text-danger"></span>
+                    <span asp-validation-for="PartyInfo.ActivityId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="EventInfo.StartingTime" class="control-label">Time will be converted to Server Time Automatically</label>
-                    <input asp-for="EventInfo.StartingTime" class="form-control" />
-                    <span asp-validation-for="EventInfo.StartingTime" class="text-danger"></span>
+                    <label asp-for="PartyInfo.PartySize" class="control-label">Party Size</label>
+                    <select id="PartyInfo.PartySize" asp-for="PartyInfo.PartySize" class="form-control">
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="8">8</option>
+                        <option value="16">16</option>
+                        <option value="32">32</option>
+                    </select>
+                    <span asp-validation-for="PartyInfo.PartySize" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PartyInfo.StartingTime" class="control-label">Time will be converted to Server Time Automatically</label>
+                    <input asp-for="PartyInfo.StartingTime" class="form-control" />
+                    <span asp-validation-for="PartyInfo.StartingTime" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-dark" />
@@ -57,7 +69,6 @@ else
                 $("#ActivityId").empty();
                 $("#ActivityId").append("<option value=''>Select Event</option>");
                 $.getJSON(`?handler=SubEvents&EventTypeId=${eventId}`, (data) => {
-                    console.log(data);
                     $.each(data, function (i, item) {
                         $("#ActivityId").append($("<option>").val(item.id).text(item.name));
                     });

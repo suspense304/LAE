@@ -1,0 +1,62 @@
+﻿@page
+@model LAE.Pages.Events.Session.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@Model.PartyInfo.Activity.Name</h1>
+<h5>Starts at: @Model.PartyInfo.StartingTime Server Time</h5>
+
+<br />
+<hr />
+<br />
+
+<div>
+    <table class="table text-center" id="EventTable" style="width: 100%">
+        <thead>
+            <tr>
+                <th>IGN</th>
+                <th>Discord</th>
+                <th>Class</th>
+                <th>Gear Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Model.PartyInfo.CreatedBy.CharacterName
+                </td>
+                <td>
+                    @Model.Creator.DiscordName
+                </td>
+                <td>
+                    <img class="imgHoverHighlight" src="\Images\classes\@(Model.PartyInfo.CreatedBy.GetClassIcon(Model.PartyInfo.CreatedBy.CharClass)).png" title="@Model.PartyInfo.CreatedBy.DisplayName" />
+                </td>
+                <td>
+                    @Model.Creator.ItemLevel
+                </td>
+            </tr>
+            @foreach (var member in Model.Members)
+            {
+                <tr>
+                    <td>
+                        @member.CharacterName
+                    </td>
+                    <td>
+                        @member.DiscordName
+                    </td>
+                    <td>
+                        <img class="imgHoverHighlight" src="\Images\classes\@(member.GetClassIcon(Model.PartyInfo.CreatedBy.CharClass)).png" title="@member.DisplayName" />
+                    </td>
+                    <td>
+                        @member.ItemLevel
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>

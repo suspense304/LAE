@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using LAE.Data;
 using LostArkEng.Models;
 using Microsoft.AspNetCore.Identity;
+using LAE.Models;
 
 namespace LAE.Pages.Events.Events
 {
@@ -24,7 +25,7 @@ namespace LAE.Pages.Events.Events
         public ApplicationUser LoggedInUser { get; set; }
 
         [BindProperty]
-        public EventInfo EventInfo { get; set; }
+        public PartyInfo PartyInfo { get; set; }
 
         private async Task<ApplicationUser> GetCurrentUser()
         {
@@ -39,9 +40,9 @@ namespace LAE.Pages.Events.Events
                 return NotFound();
             }
 
-            EventInfo = await _context.EventInfo.FirstOrDefaultAsync(m => m.Id == id);
+            PartyInfo = await _context.PartyInfo.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (EventInfo == null)
+            if (PartyInfo == null)
             {
                 return NotFound();
             }
@@ -55,11 +56,11 @@ namespace LAE.Pages.Events.Events
                 return NotFound();
             }
 
-            EventInfo = await _context.EventInfo.FindAsync(id);
+            PartyInfo = await _context.PartyInfo.FindAsync(id);
 
-            if (EventInfo != null)
+            if (PartyInfo != null)
             {
-                _context.EventInfo.Remove(EventInfo);
+                _context.PartyInfo.Remove(PartyInfo);
                 await _context.SaveChangesAsync();
             }
 

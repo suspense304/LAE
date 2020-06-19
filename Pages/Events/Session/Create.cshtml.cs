@@ -8,6 +8,7 @@ using LAE.Services;
 using System;
 using System.Globalization;
 using System.Linq;
+using LAE.Models;
 
 namespace LAE.Pages.Events.Events
 {
@@ -16,18 +17,23 @@ namespace LAE.Pages.Events.Events
         private readonly Data.ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEventService _eventService;
-        
+
         [BindProperty]
         public ApplicationUser LoggedInUser { get; set; }
         [BindProperty]
         public int GearScore { get; set; }
 
+        //[BindProperty]
+        //public EventInfo EventInfo { get; set; }
+
         [BindProperty]
-        public EventInfo EventInfo { get; set; }
+        public PartyInfo PartyInfo { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public int EventTypeId { get; set; }
         public int ActivityId { get; set; }
+
+        public int PartySize { get; set; }
         public SelectList ActivityTypes { get; set; }
 
         public DateTime CurrentTime;
@@ -52,40 +58,42 @@ namespace LAE.Pages.Events.Events
         {
             return new JsonResult(_eventService.GetSubEvents(EventTypeId));
         }
+
         public async Task OnGetAsync()
         {
             LoggedInUser = await GetCurrentUser();
             CurrentTime = DateTime.Now;
             ServerTime = DateTime.UtcNow.AddHours(3);
-            ActivityTypes =  new SelectList(_eventService.GetEvents(),
+            ActivityTypes = new SelectList(_eventService.GetEvents(),
                 nameof(EventType.TypeId), nameof(EventType.Type));
         }
 
-        
+
         public async Task<IActionResult> OnPostAsync()
         {
             ApplicationUser user = await GetCurrentUser();
 
             decimal diff = (int)DateTime.UtcNow.AddHours(3).Subtract(DateTime.Now).TotalMinutes;
-            DateTime newTime = EventInfo.StartingTime.AddMinutes((double)diff);
+            DateTime newTime = PartyInfo.StartingTime.AddMinutes((double)diff);
 
+            PartyInfo newParty = new PartyInfo();
+            newParty.ActivityId = PartyInfo.ActivityId;
+            newParty.CreatedBy = user;
+            newParty.isActive = true;
+            newParty.StartingTime = newTime;
+            newParty.PartyMembers = 1;
+            newParty.PartySize = PartyInfo.PartySize;
+            newParty.Server = user.Server;
 
-            EventInfo newEvent = new EventInfo();
-            newEvent.ActivityId = EventInfo.ActivityId;
-            newEvent.CreatedBy = user;
-            newEvent.isActive = true;
-            newEvent.StartingTime = newTime;
-            newEvent.ServerName = user.Server;
+            int activeCount = _context.PartyInfo.AsQueryable().Where(w => w.CreatedBy == user && w.isActive == true).ToList().Count;
 
-            int activeCount = _context.EventInfo.AsQueryable().Where(w => w.CreatedBy == user && w.isActive == true).ToList().Count;
-
-            if(activeCount == 0)
+            if (activeCount == 0)
             {
-                _context.EventInfo.Add(newEvent);
+                _context.PartyInfo.Add(newParty);
 
                 DiscordSender discordOpen = new DiscordSender(722102560722386975, "1Ty2jGrVK46OuSlFwOrp82tCjFIO8ngAhG6TiDQHOw63s7innCp8K654KQIKQLN77fBO", CultureInfo.CurrentCulture);
-                string EventName = _context.Actvity.AsQueryable().Where(m => m.Id == newEvent.ActivityId).FirstOrDefault().Name;
-                discordOpen.EmitOpenGroup(newEvent.CreatedBy.DiscordName, EventName);
+                string EventName = _context.Actvity.AsQueryable().Where(m => m.Id == newParty.ActivityId).FirstOrDefault().Name;
+                discordOpen.EmitOpenGroup(newParty.CreatedBy.DiscordName, EventName);
 
                 await _context.SaveChangesAsync();
                 ErrorMessage = "";
@@ -96,9 +104,9 @@ namespace LAE.Pages.Events.Events
                 ErrorMessage = "You can't create more than one event at a time!";
                 return Page();
             }
-            
 
-            
+
+
         }
     }
 }

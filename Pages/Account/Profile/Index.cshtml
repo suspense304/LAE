@@ -59,15 +59,12 @@
                 <tr>
                     <th>Event</th>
                     <th class="d-none d-sm-none d-md-table-cell">Leader</th>
-                    <th class="d-none d-sm-none d-md-table-cell">2<sup>nd</sup></th>
-                    <th class="d-none d-sm-none d-md-table-cell">3<sup>rd</sup></th>
-                    <th class="d-none d-sm-none d-md-table-cell">4<sup>th</sup></th>
                     <th class="d-none d-sm-none d-md-table-cell">Time</th>
                 </tr>
             </thead>
             <tbody>
 
-                @foreach (var item in Model.EventInfo)
+                @foreach (var item in Model.PartyInfo)
                 {
                     <form method="post">
                         <tr>
@@ -76,36 +73,6 @@
                             </td>
                             <td class="d-none d-sm-table-cell">
                                 <a asp-page="../../Account/Profile/Details" asp-route-id="@item.CreatedBy.Id"><img class="imgHoverHighlight" src="\Images\classes\@(item.CreatedBy.GetClassIcon(item.CreatedBy.CharClass)).png" title="@item.CreatedBy.DisplayName" /></a>
-                            </td>
-                            <td class="d-none d-sm-table-cell">
-                                @if (item.MemberTwo != null)
-                                {
-                                    <a asp-page="../../Account/Profile/Details" asp-route-id="@item.MemberTwo.Id"><img class="imgHoverHighlight" src="\Images\classes\@(item.MemberTwo.GetClassIcon(item.MemberTwo.CharClass)).png" title="@item.MemberTwo.DisplayName" /></a>
-                                }
-                                else
-                                {
-                                    <span>EMPTY</span>
-                                }
-                            </td>
-                            <td class="d-none d-sm-table-cell">
-                                @if (item.MemberThree != null)
-                                {
-                                    <a asp-page="../../Account/Profile/Details" asp-route-id="@item.MemberThree.Id"><img class="imgHoverHighlight" src="\Images\classes\@(item.MemberThree.GetClassIcon(item.MemberThree.CharClass)).png" title="@item.MemberThree.DisplayName" /></a>
-                                }
-                                else
-                                {
-                                    <span>EMPTY</span>
-                                }
-                            </td>
-                            <td class="d-none d-sm-table-cell">
-                                @if (item.MemberFour != null)
-                                {
-                                    <a asp-page="../../Account/Profile/Details" asp-route-id="@item.MemberFour.Id"><img class="imgHoverHighlight" src="\Images\classes\@(item.MemberFour.GetClassIcon(item.MemberFour.CharClass)).png" title="@item.MemberFour.DisplayName" /></a>
-                                }
-                                else
-                                {
-                                    <span>EMPTY</span>
-                                }
                             </td>
                             <td class="d-none d-sm-table-cell">
                                 @Html.DisplayFor(modelItem => item.StartingTime)
