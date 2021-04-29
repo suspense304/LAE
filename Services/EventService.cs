@@ -27,7 +27,7 @@ namespace LAE.Services
         public IEnumerable<Activity> GetSubEvents(int typeId)
         {
             var subCategories = new List<Activity>();
-            subCategories = _context.Actvity.AsQueryable().Where(s => s.TypeId == typeId).ToList();
+            subCategories = _context.Actvity.AsQueryable().Where(s => s.TypeId == typeId).OrderBy(w=> w.Name).ToList();
             return subCategories;
         }
     }

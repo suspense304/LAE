@@ -20,6 +20,12 @@
     <Compile Remove="Data\Migrations\20200619044730_CreatorId.Designer.cs" />
     <Compile Remove="Data\Migrations\20200619045154_Test.cs" />
     <Compile Remove="Data\Migrations\20200619045154_Test.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200619123601_Test.cs" />
+    <Compile Remove="Data\Migrations\20200619123601_Test.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200619124324_IdentityIds.cs" />
+    <Compile Remove="Data\Migrations\20200619124324_IdentityIds.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200619125113_IdentityIds.cs" />
+    <Compile Remove="Data\Migrations\20200619125113_IdentityIds.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

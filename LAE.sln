@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LAE", "LAE.csproj", "{4E8E6570-B8E2-4B3B-8914-F98574B8B1BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LAEDiscordBot", "..\LAEDiscordBot\LAEDiscordBot.csproj", "{946C5691-F3DF-4552-98A0-3427892EB216}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LAEDiscordBot", "..\LAEDiscordBot\LAEDiscordBot.csproj", "{946C5691-F3DF-4552-98A0-3427892EB216}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

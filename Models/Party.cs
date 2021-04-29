@@ -7,6 +7,7 @@ namespace LAE.Models
     public class Party
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         //[ForeignKey("PartyInfo")]

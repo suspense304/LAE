@@ -10,6 +10,7 @@ namespace LAE.Models
     public class PartyInfo
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [ForeignKey("ActivityType")]
@@ -22,6 +23,8 @@ namespace LAE.Models
         [Required]
         public int PartyMembers { get; set; }
         public int PartySize { get; set; }
+
+        public string TestColumn { get; set; }
         public bool isActive { get; set; }
         [ForeignKey("Server")]
         public ServerName ServerName { get; set; }

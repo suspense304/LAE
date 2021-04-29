@@ -56,6 +56,7 @@ namespace LAE.Pages.Events.Sessions
             newAct.MinGearScore = Activity.MinGearScore;
             newAct.isActive = true;
             newAct.Name = Activity.Name;
+            newAct.PartySize = Activity.PartySize;
 
             _context.Actvity.Add(newAct);
 
